@@ -288,28 +288,6 @@ for val in test_values:
     
     risk_scores.append(model.predict(test_input)[0])
 
-# Create what-if analysis plot
-fig3 = go.Figure()
-fig3.add_trace(go.Scatter(x=test_values, y=risk_scores,
-                          mode='lines+markers',
-                          name='Risk Score',
-                          line=dict(color='blue', width=2),
-                          marker=dict(size=6)))
-
-# Mark current value
-fig3.add_trace(go.Scatter(x=[current_value], y=[prediction],
-                          mode='markers',
-                          name='Current Value',
-                          marker=dict(color='red', size=12, symbol='star')))
-
-fig3.update_layout(title=f'Impact of {factor_to_vary} on Cancer Risk Score',
-                   xaxis_title=factor_to_vary,
-                   yaxis_title='Predicted Risk Score',
-                   height=400,
-                   hovermode='closest')
-
-st.plotly_chart(fig3, use_container_width=True)
-
 # ============================================================
 # RISK FACTOR BREAKDOWN
 # ============================================================
