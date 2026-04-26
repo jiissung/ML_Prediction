@@ -231,62 +231,6 @@ fig2.update_layout(title='Monte Carlo Simulation of Risk Score (1000 iterations)
 
 st.plotly_chart(fig2, use_container_width=True)
 
-# ============================================================
-# INTERACTIVE VISUALIZATION 3: What-If Analysis
-# ============================================================
-
-st.subheader("🔍 Interactive What-If Analysis")
-
-# Allow user to select which factor to analyze
-factor_to_vary = st.selectbox('Select factor to analyze impact on risk score',
-                               feature_names)
-
-# Create range of values for the selected factor
-if factor_to_vary == 'Age':
-    test_values = np.linspace(0, 100, 50)
-    current_value = age
-elif factor_to_vary == 'BMI':
-    test_values = np.linspace(10, 50, 50)
-    current_value = bmi
-elif factor_to_vary == 'Family History':
-    test_values = [0, 10]
-    current_value = family_history_encoded * 10
-elif factor_to_vary == 'BRCA Mutation':
-    test_values = [0, 10]
-    current_value = brca_mutation_encoded * 10
-else:
-    test_values = np.linspace(0, 10, 50)
-    current_value = feature_values[feature_names.index(factor_to_vary)]
-
-# Create test scenarios
-risk_scores = []
-for val in test_values:
-    # Modify the input data based on selected factor
-    test_input = input_data.copy()
-    factor_index = feature_names.index(factor_to_vary)
-    if factor_to_vary == 'Family History':
-        test_input['Family_History'] = val/10
-    elif factor_to_vary == 'BRCA Mutation':
-        test_input['BRCA_Mutation'] = val/10
-    elif factor_to_vary == 'Age':
-        test_input['Age'] = val
-    elif factor_to_vary == 'BMI':
-        test_input['BMI'] = val
-    else:
-        # Map back to original feature names
-        feature_mapping = {
-            'Air Pollution': 'Air_Pollution',
-            'Smoking': 'Smoking',
-            'Alcohol': 'Alcohol_Use',
-            'Processed Foods': 'Diet_Salted_Processed',
-            'Obesity': 'Obesity',
-            'Red Meat': 'Diet_Red_Meat',
-            'Fruit/Veg Intake': 'Fruit_Veg_Intake',
-            'Physical Inactivity': 'Physical_Activity_Level'
-        }
-        test_input[feature_mapping[factor_to_vary]] = val
-    
-    risk_scores.append(model.predict(test_input)[0])
 
 # ============================================================
 # RISK FACTOR BREAKDOWN
